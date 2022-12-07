@@ -19,6 +19,9 @@ $c1541 -attach "../original-disks/elite[firebird_1986](ntsc)(v060186)(!).g64" \
 # Assemble the additional code required for flicker-free ships
 $beebasm -i ../src/elite-flicker-free.asm -v > compile.txt
 
+# Assemble the additional code required for the Universe Editor
+$beebasm -i ../src/elite-universe-editor-c64.asm -v > compile.txt
+
 # Modify the main game code
 $python ../src/elite-modify.py ntsc
 
@@ -26,8 +29,8 @@ $python ../src/elite-modify.py ntsc
 $c1541 \
     -format "no-flicker elite,1" \
             d64 \
-            ../flicker-free-disks/c64-elite-flicker-free-ntsc.d64 \
-    -attach ../flicker-free-disks/c64-elite-flicker-free-ntsc.d64 \
+            ../universe-editor-disks/c64-elite-universe-editor-ntsc.d64 \
+    -attach ../universe-editor-disks/c64-elite-universe-editor-ntsc.d64 \
     -write firebird \
     -write gma1.modified gma1 \
     -write gma3 \
@@ -49,6 +52,9 @@ $c1541 -attach "../original-disks/elite[firebird_1986](pal)(v040486).g64" \
 # Assemble the additional code required for flicker-free ships
 $beebasm -i ../src/elite-flicker-free.asm -v >> compile.txt
 
+# Assemble the additional code required for the Universe Editor
+$beebasm -i ../src/elite-universe-editor-c64.asm -v > compile.txt
+
 # Modify the main game code
 $python ../src/elite-modify.py pal
 
@@ -56,8 +62,8 @@ $python ../src/elite-modify.py pal
 $c1541 \
     -format "no-flicker elite,1" \
             d64 \
-            ../flicker-free-disks/c64-elite-flicker-free-pal.d64 \
-    -attach ../flicker-free-disks/c64-elite-flicker-free-pal.d64 \
+            ../universe-editor-disks/c64-elite-universe-editor-pal.d64 \
+    -attach ../universe-editor-disks/c64-elite-universe-editor-pal.d64 \
     -write firebird \
     -write byebyejulie \
     -write gma1.modified gma1 \
@@ -69,19 +75,3 @@ $c1541 \
 # Report checksums
 cd ..
 $python src/crc32.py reference-binaries/pal work
-
-# And finally we modify the Plus/4 version
-cd work
-
-# Copy the decrypted PRG to the work folder
-cp ../original-disks/elite_+4_unpacked.prg .
-
-# Assemble the additional code required for flicker-free ships
-$beebasm -i ../src/elite-flicker-free-plus4.asm -v > compile.txt
-
-# Modify the main game code
-$python ../src/elite-modify-plus4.py
-
-# Report checksums
-cd ..
-$python src/crc32.py reference-binaries/plus4 work
