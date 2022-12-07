@@ -2,7 +2,7 @@
 #
 # ******************************************************************************
 #
-# COMMODORE 64 ELITE FLICKER-FREE MODIFICATION SCRIPT
+# COMMODORE 64 ELITE UNIVERSE EDITOR MODIFICATION SCRIPT
 #
 # Written by Mark Moxon
 #
@@ -267,7 +267,7 @@ insert_nops(data_block, 0x9FC1, 1)
 
 # LL9 (Part 10)
 #
-# This are the two modifications at LL79.
+# These are the two modifications at LL79.
 #
 # From: LDA (V),Y
 #       TAX
@@ -358,6 +358,45 @@ data_block.extend(elite_file.read())
 elite_file.close()
 
 print("[ Modify  ] append file extra.bin")
+
+# We now add the Universe Editor, which lives in the block of memory that's
+# normally taken up by the title and docking music
+
+# Set the addresses for the patch routines that we will inject into the main
+# game code to call the Universe Editor
+
+patch1 = 0xB72D
+
+# The first step is to disable the music, which we can do easily by simply
+# returning from the music routine at $920D, so that the music never gets
+# played.
+
+insert_bytes(data_block, 0x920D, [
+    0x60                                # RTS
+])
+
+# BR1
+#
+# Next we patch the BR1 routine to detect the "0" key press to start the
+# Universe Editor. We change the call to TITLE to jump to the PATCH1 routine,
+# which implements the original instructions before checking for the Universe
+# Editor key press.
+#
+# From: JSR TITLE
+#
+# To:   JSR PATCH1
+
+insert_bytes(data_block, 0x8899, [
+    0x20, patch1 % 256, patch1 // 256     # JSR PATCH1
+])
+
+# UniverseEditor
+#
+# We have already assembled the Universe Editor in BeebAsm and saved it as
+# the binary file editor.bin, so now we drop this over the top of the music
+# data at $B72D.
+
+insert_binary_file(data_block, 0xB72D, "editor.bin")
 
 # All the modifications are done, so write the output file for gma6.modified,
 # which we can use for debugging
