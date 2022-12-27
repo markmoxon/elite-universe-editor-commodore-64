@@ -28,7 +28,7 @@ _C64_VERSION    = TRUE
 \ ******************************************************************************
 
 NI%         = 37
-NOSH        = 12
+NOSH        = 10
 NTY         = 33
 MSL         = 1
 SST         = 2
@@ -179,12 +179,15 @@ PLUT        = $A626
 LOOK1       = $A6BA
 SIGHT       = $A6D4
 TT66        = $A72F
+NOISE       = $A858
 DOT         = $B09D
 ECBLB       = $B0FD
 SPBLB       = $B10E
 SCAN        = $B410
 XX21        = $D000
 K%          = $F900
+
+keyLog      = $8D0C     \ Key logger table, which is distinct from KL
 
 GTDRV = 0   \ Not used in C64? Used in SaveLoadFile in UE
 CATS = 0    \ Not used in C64? Used in DeleteUniverse and ReturnToDiscMenu in UE
