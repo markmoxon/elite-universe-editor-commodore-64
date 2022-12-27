@@ -234,6 +234,23 @@ ORG CODE%
 
 \ ******************************************************************************
 \
+\       Name: TITLE
+\       Type: Subroutine
+\   Category: Start and end
+\    Summary: Show the "Universe Editor" subtitle
+\
+\ ******************************************************************************
+
+.PATCH2
+
+ LDA #8                 \ Move the text cursor to column 8
+ JSR DOXC
+
+ LDA #6                 \ Print extended token 6 ("UNIVERSE EDITOR") and return
+ JMP PrintToken         \ from the subroutine using a tail call
+
+\ ******************************************************************************
+\
 \       Name: SkipModifierKeys
 \       Type: Subroutine
 \   Category: Universe Editor

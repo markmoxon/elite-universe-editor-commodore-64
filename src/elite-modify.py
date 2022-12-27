@@ -366,6 +366,7 @@ print("[ Modify  ] append file extra.bin")
 # game code to call the Universe Editor
 
 patch1 = 0xB72D
+patch2 = 0xB738
 
 # The first step is to disable the music, which we can do easily by simply
 # returning from the music routine at $920D, so that the music never gets
@@ -389,6 +390,25 @@ insert_bytes(data_block, 0x920D, [
 insert_bytes(data_block, 0x8899, [
     0x20, patch1 % 256, patch1 // 256     # JSR PATCH1
 ])
+
+# TITLE
+#
+# This is the modification to TITLE to display the Universe Editor subtitle.
+#
+# From: LDA #6
+#       JSR DOXC
+#       LDA PATG
+#       BEQ awe
+#       LDA #13
+#       JSR DETOK
+#
+# To:   JSR PATCH2
+#       NOP x12
+
+insert_bytes(data_block, 0x8969, [
+    0x20, patch2 % 256, patch2 // 256     # JSR PATCH2
+])
+insert_nops(data_block, 0x896C, 12)
 
 # UniverseEditor
 #
