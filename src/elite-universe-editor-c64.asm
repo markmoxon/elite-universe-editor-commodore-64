@@ -224,18 +224,112 @@ ORG CODE%
  JSR TITLE              \ Call TITLE to show the rotating Cobra Mk III and "Load
                         \ New Commander?" prompt
 
- CMP #f1                \ Did we press f1? If not, skip the following
-\BNE P%+5               \ instruction
+ CMP #f0                \ Did we press f1/f2? If not, skip the following
+ BNE P%+5               \ instruction
 
- JMP UniverseEditor     \ We pressed f1, so jump to UniverseEditor to start the
+ JMP UniverseEditor     \ We pressed f1/f2, so jump to UniverseEditor to start the
                         \ universe editor
 
  RTS                    \ Return from the subroutine
 
-\.UniverseEditor
+\ ******************************************************************************
+\
+\       Name: SkipModifierKeys
+\       Type: Subroutine
+\   Category: Universe Editor
+\    Summary: Patch to stop RDKEY from storing modifier keys in KL, and to
+\             implement SHIFT-cursor keys
+\
+\ ******************************************************************************
 
-\ JSR BEEP               \ Skeleton UE code for testing, remove when we uncomment
-\ JMP BR1                \ the following
+.SkipModifierKeys
+
+ CPX #keyShiftL         \ If this is a modifier key, jump to smod1 to skip the
+ BEQ smod1              \ following, so we do not store the key in KL
+ CPX #keyShiftR
+ BEQ smod1
+ CPX #keyCtrl
+ BEQ smod1
+ CPX #keyC64
+ BEQ smod1
+
+ STX KL                 \ Store the key pressed in KL
+
+.smod1
+
+ SEC                    \ Set the C flag, as in the original
+
+ RTS                    \ Return from the subroutine
+
+\ ******************************************************************************
+\
+\       Name: ShiftCursorKeys
+\       Type: Subroutine
+\   Category: Universe Editor
+\    Summary: Patch to implement the SHIFT-cursor keys in RDKEY
+\
+\ ******************************************************************************
+
+.ShiftCursorKeys
+
+ PHA                    \ Store A on the stack, so we can implement the code
+                        \ below that the patch replaces
+
+ LDX KL                 \ Fetch the key press
+
+ CPX #keyDown           \ If the down arrow is not being pressed, jump to scur2
+ BNE scur2              \ to keep checking
+
+                        \ If we get here then the down arrow is being pressed, so
+                        \ we need to check whether SHIFT is also being pressed
+
+ BIT keyLog+keyShiftL   \ If the left SHIFT is being pressed, jump to scur1 to
+ BMI scur1              \ set KL to the up arrow (i.e. SHIFT-down arrow)
+
+ BIT keyLog+keyShiftR   \ If the right SHIFT is being pressed, jump to scur1 to
+ BMI scur1              \ set KL to the up arrow (i.e. SHIFT-down arrow)
+
+ BPL scur4              \ SHIFT is not being pressed, so jump to scur4 to return
+                        \ from the subroutine
+
+.scur1
+
+ PHA                    \ SHIFT-down arrow is being pressed, so set KL to the up
+ LDA #keyUp             \ arrow
+ STA KL
+ PLA
+
+ JMP scur4              \ Jump to scur4 to return from the subroutine
+
+.scur2
+
+ CPX #keyRight          \ If the right arrow is not being pressed, jump to scur4
+ BNE scur4              \ to keep checking
+
+ BIT keyLog+keyShiftL   \ If the left SHIFT is being pressed, jump to scur3 to
+ BMI scur3              \ set KL to the right arrow (i.e. SHIFT-left arrow)
+
+ BIT keyLog+keyShiftR   \ If the left SHIFT is being pressed, jump to scur3 to
+ BMI scur3              \ set KL to the right arrow (i.e. SHIFT-left arrow)
+
+ BPL scur4              \ SHIFT is not being pressed, so jump to scur4 to return
+                        \ from the subroutine
+
+.scur3
+
+ PHA                    \ SHIFT-right arrow is being pressed, so set KL to the
+ LDA #keyLeft           \ left arrow
+ STA KL
+ PLA
+
+.scur4
+
+ PLA                    \ Fetch the value of A from the stack, so it is the same
+                        \ as when we jumped to the patch
+
+ STA $DC00              \ Implement the instruction that the patch replaces
+
+ RTS                    \ Return from the subroutine
 
  INCLUDE "../src/elite-universe-editor-variables.asm"
  INCLUDE "../src/elite-universe-editor-3.asm"
