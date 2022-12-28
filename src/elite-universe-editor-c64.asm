@@ -39,6 +39,8 @@ YELLOW2     = %10101010
 GREEN2      = %11111111
 
 T1          = $0006
+SC          = $0007
+SCH         = $0008
 INWK        = $0009
 NEWB        = $002D
 P           = $002E
@@ -174,6 +176,7 @@ TT217       = $8FEA
 t           = $8FEC
 TIDY        = $9105
 LL9         = $9A86
+LL74        = $9F35 \ STA LL74+16
 MV5         = $A434
 PLUT        = $A626
 LOOK1       = $A6BA
@@ -192,8 +195,6 @@ keyLog      = $8D0C     \ Key logger table, which is distinct from KL
 GTDRV = 0   \ Not used in C64? Used in SaveLoadFile in UE
 CATS = 0    \ Not used in C64? Used in DeleteUniverse and ReturnToDiscMenu in UE
 stack = 0   \ Not used in C64? Used in ShowDiscMenu in UE
-SC = $0007  \ Not used in C64? Used for dashbord mods in UE
-SCH = $0008
 
 \ ******************************************************************************
 \
@@ -246,8 +247,12 @@ ORG CODE%
  LDA #8                 \ Move the text cursor to column 8
  JSR DOXC
 
- LDA #6                 \ Print extended token 6 ("UNIVERSE EDITOR") and return
- JMP PrintToken         \ from the subroutine using a tail call
+ LDA #6                 \ Print extended token 6 ("UNIVERSE EDITOR")
+ JSR PrintToken
+
+ JMP MT19               \ Call MT19 to capitalise the next letter (i.e. set
+                        \ Sentence Case for this word only) and return from the
+                        \ subroutine using a tail call
 
 \ ******************************************************************************
 \
