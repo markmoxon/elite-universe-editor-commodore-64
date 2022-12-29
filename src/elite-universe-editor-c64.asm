@@ -111,6 +111,7 @@ DTEN        = $23A0
 MT19        = $24ED
 S1%         = $25A6
 NA%         = $25AB
+UNIV        = $28A4
 NLIN4       = $28DC
 MVT3        = $2D69
 MVS5        = $2DC5
