@@ -118,6 +118,7 @@ MVS5        = $2DC5
 pr2         = $2E55
 BEEP        = $2FEE
 DIALS       = $2FF3
+PZW2        = $30BB     \ STA PZW2-3 in ApplyMods/RevertMods
 GINF        = $3E87
 ping        = $3E95
 DELAY       = $3EA1
