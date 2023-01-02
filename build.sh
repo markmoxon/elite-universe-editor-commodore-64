@@ -27,7 +27,7 @@ $python ../src/elite-modify.py ntsc
 
 # Rebuild the game disk
 $c1541 \
-    -format "no-flicker elite,1" \
+    -format "elite uni editor,1" \
             d64 \
             ../universe-editor-disks/c64-elite-universe-editor-ntsc.d64 \
     -attach ../universe-editor-disks/c64-elite-universe-editor-ntsc.d64 \
@@ -36,7 +36,8 @@ $c1541 \
     -write gma3 \
     -write gma4 \
     -write gma5 \
-    -write gma6.encrypted gma6
+    -write gma6.encrypted gma6 \
+    -write ../universe-files/U.MANUAL.bin "manual,s"
 
 # Report checksums
 cd ..
@@ -60,7 +61,7 @@ $python ../src/elite-modify.py pal
 
 # Rebuild the game disk
 $c1541 \
-    -format "no-flicker elite,1" \
+    -format "elite uni editor,1" \
             d64 \
             ../universe-editor-disks/c64-elite-universe-editor-pal.d64 \
     -attach ../universe-editor-disks/c64-elite-universe-editor-pal.d64 \
@@ -70,7 +71,8 @@ $c1541 \
     -write gma3 \
     -write gma4 \
     -write gma5 \
-    -write gma6.encrypted gma6
+    -write gma6.encrypted gma6 \
+    -write ../universe-files/U.MANUAL.bin "manual,s"
 
 # Report checksums
 cd ..
