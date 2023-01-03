@@ -367,6 +367,7 @@ print("[ Modify  ] append file extra.bin")
 
 patch1 = 0xB72D
 patch2 = 0xB738
+patch3 = 0xB745
 
 # The first step is to disable the music, which we can do easily by simply
 # returning from the music routine at $920D, so that the music never gets
@@ -409,6 +410,19 @@ insert_bytes(data_block, 0x8969, [
     0x20, patch2 % 256, patch2 // 256     # JSR PATCH2
 ])
 insert_nops(data_block, 0x896C, 12)
+
+# BEGIN
+#
+# Next, we patch the game entry point so the game defaults to disk rather than
+# tape, which we can do by changing the option relevant byte from 0 to &FF.
+
+# From: JSR JAMESON
+#
+# To:   JSR PATCH3
+
+insert_bytes(data_block, 0x8879, [
+    0x20, patch3 % 256, patch3 // 256     # JSR PATCH3
+])
 
 # UniverseEditor
 #

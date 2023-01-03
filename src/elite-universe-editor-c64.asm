@@ -57,8 +57,8 @@ ORG CODE%
 
 .PATCH1
 
-                        \ We replace the JSR TITLE in BR1 with JSR PATCH1, so we
-                        \ start with this instruction to ensure that it still
+                        \ We replaced the JSR TITLE in BR1 with JSR PATCH1, so
+                        \ we start with this instruction to ensure that it still
                         \ gets done
 
  JSR TITLE              \ Call TITLE to show the rotating Cobra Mk III and "Load
@@ -92,6 +92,24 @@ ORG CODE%
  JMP MT19               \ Call MT19 to capitalise the next letter (i.e. set
                         \ Sentence Case for this word only) and return from the
                         \ subroutine using a tail call
+
+\ ******************************************************************************
+\
+\       Name: BEGIN
+\       Type: Subroutine
+\   Category: Start and end
+\    Summary: Initialise the configuration variables and start the game
+\
+\ ******************************************************************************
+
+.PATCH3
+
+ DEC $1D0E              \ Change the media option from 0 to &FF, so the game
+                        \ defaults to disk on loading
+
+ JMP JAMESON            \ We replace the JSR JAMESON in BEGIN with JSR PATCH3,
+                        \ so we finish with this instruction to ensure that it
+                        \ still gets done
 
 \ ******************************************************************************
 \
