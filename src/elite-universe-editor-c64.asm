@@ -104,8 +104,8 @@ ORG CODE%
 
 .PATCH3
 
- DEC $1D0E              \ Change the media option from 0 to &FF, so the game
-                        \ defaults to disk on loading
+ DEC DTAPE              \ Change the current media configuration in DTAPE from 0
+                        \ to &FF, so the game defaults to disk on loading
 
  JMP JAMESON            \ We replace the JSR JAMESON in BEGIN with JSR PATCH3,
                         \ so we finish with this instruction to ensure that it
@@ -207,7 +207,7 @@ ORG CODE%
  PLA                    \ Fetch the value of A from the stack, so it is the same
                         \ as when we jumped to the patch
 
- STA $DC00              \ Implement the instruction that the patch replaces
+ STA CIA1_PORTA         \ Implement the instruction that the patch replaces
 
  RTS                    \ Return from the subroutine
 
