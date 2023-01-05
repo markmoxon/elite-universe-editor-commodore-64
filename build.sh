@@ -37,7 +37,10 @@ $c1541 \
     -write gma4 \
     -write gma5 \
     -write gma6.encrypted gma6 \
-    -write ../universe-files/U.MANUAL.bin "manual,s"
+    -write ../universe-files/u.boxart1.bin "boxart1" \
+    -write ../universe-files/u.boxart2.bin "boxart2" \
+    -write ../universe-files/u.manual.bin "manual" \
+    -write ../universe-files/u.shipid.bin "shipid"
 
 # Report checksums
 cd ..
@@ -72,7 +75,10 @@ $c1541 \
     -write gma4 \
     -write gma5 \
     -write gma6.encrypted gma6 \
-    -write ../universe-files/U.MANUAL.bin "manual,s"
+    -write ../universe-files/u.boxart1.bin "boxart1" \
+    -write ../universe-files/u.boxart2.bin "boxart2" \
+    -write ../universe-files/u.manual.bin "manual" \
+    -write ../universe-files/u.shipid.bin "shipid"
 
 # Report checksums
 cd ..
