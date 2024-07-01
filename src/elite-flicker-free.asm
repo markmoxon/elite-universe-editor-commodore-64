@@ -1,6 +1,6 @@
 ; ******************************************************************************
 ;
-; BBC MASTER ELITE GAME SOURCE (FLICKER-FREE ROUTINES)
+; FLICKER-FREE COMMODORE 64 ELITE
 ;
 ; BBC Master Elite was written by Ian Bell and David Braben and is copyright
 ; Acornsoft 1986
@@ -31,9 +31,10 @@
 ; from the BBC Micro version (which is very similar, if you ignore any different
 ; addresses).
 ;
-; XX14 is an unused variable in BBC Micro Elite, and the corresponding address
+; LSNUM is an unused variable in BBC Micro Elite, and the corresponding address
 ; in Commodore 64 Elite is used by something else. Luckily locations $FB to $FE
-; are unused by Elite and the OS, so we can sneak XX14 in there instead.
+; are unused by Elite and the OS, so we can sneak LSNUM and LSNUM2 in there
+; instead.
 ;
 ; Also, the Y variable contains the height of the space view in pixels, divided
 ; by 2. This is 96 on the BBC Micro, but the space view is 144 pixels on the
@@ -41,7 +42,7 @@
 ;
 ; ******************************************************************************
 
- XX1    = $0009
+ XX1    = $0009         ; Variables for flicker-free ships
  INWK   = $0009
  XX19   = $002A
  CNT    = $0030
@@ -142,7 +143,7 @@
  STA X2                 ; Store the x-coordinate of the ship dot in X1, as this
                         ; is where the dash starts
 
- JMP LLX30              ; Draw this edge using flicker-free animation, by first
+ JMP LSPUT              ; Draw this edge using flicker-free animation, by first
                         ; drawing the ship's new line and then erasing the
                         ; corresponding old line from the screen, and return
                         ; from the subroutine using a tail call
@@ -163,11 +164,11 @@
 
 .LL78
 
- LDA XX14               ; If XX14 >= CNT, skip to LL81 so we don't loop back for
- CMP CNT                ; the next edge (CNT was set to the maximum heap size
- BCS LL81               ; for this ship in part 10, so this checks whether we
-                        ; have just run out of space in the ship line heap, and
-                        ; stops drawing edges if we have)
+ LDA LSNUM              ; If LSNUM >= CNT, skip to LL81 so we don't loop back
+ CMP CNT                ; for the next edge (CNT was set to the maximum heap
+ BCS LL81               ; size for this ship in part 10, so this checks whether
+                        ; we have just run out of space in the ship line heap,
+                        ; and stops drawing edges if we have)
 
  LDA V                  ; Increment V by 4 so V(1 0) points to the data for the
  CLC                    ; next edge
@@ -211,17 +212,17 @@
 
 .LL155
 
- LDY XX14               ; Set Y to the offset in the line heap XX14
+ LDY LSNUM              ; Set Y to the offset in the line heap LSNUM
 
 .LL27
 
- CPY XX14+1             ; If Y >= XX14+1, jump to LLEX to return from the ship
+ CPY LSNUM2             ; If Y >= LSNUM2, jump to LLEX to return from the ship
  BCS LLEX               ; drawing routine, because the index in Y is greater
                         ; than the size of the existing ship line heap, which
                         ; means we have alrady erased all the old ships lines
                         ; when drawing the new ship
 
-                        ; If we get here then Y < XX14+1, which means Y is
+                        ; If we get here then Y < LSNUM2, which means Y is
                         ; pointing to an on-screen line from the old ship that
                         ; we need to erase
 
@@ -253,7 +254,7 @@
 
 .LLEX
 
- LDA XX14               ; Store XX14 in the first byte of the ship line heap
+ LDA LSNUM              ; Store LSNUM in the first byte of the ship line heap
  LDY #0
  STA (XX19),Y
 
@@ -267,14 +268,16 @@
 
 ; ******************************************************************************
 ;
-;       Name: LLX30
+;       Name: LSPUT
 ;       Type: Subroutine
 ;   Category: Drawing lines
 ;    Summary: Draw a ship line using flicker-free animation
 ;
 ; ******************************************************************************
 
-.LLX30
+ GUARD $2A12
+
+.LSPUT
 
  LDY XX14               ; Set Y = XX14, to get the offset within the ship line
                         ; heap where we want to insert our new line
@@ -328,13 +331,13 @@
  STA (XX19),Y
 
  INY                    ; Increment the index to point to the next coordinate
- STY XX14               ; and store the updated index in XX14
+ STY LSNUM              ; and store the updated index in LSNUM
 
  PLP                    ; Restore the result of the comparison above, so if the
- BCS LL82a              ; original value of XX14 >= XX14+1, then we have already
-                        ; redrawn all the lines from the old ship's line heap,
-                        ; so return from the subroutine (as LL82 contains an
-                        ; RTS)
+ BCS LL82a              ; original value of LSNUM >= LSNUM2, then we have
+                        ; alreadyredrawn all the lines from the old ship's line
+                        ; heap, so return from the subroutine (as LL82 contains
+                        ; an RTS)
 
  JMP LL30               ; Otherwise there are still more lines to erase from the
                         ; old ship on-screen, so the coordinates in (X1, Y1) and
@@ -371,15 +374,15 @@
                         ; We now set things up for flicker-free ship plotting,
                         ; by setting the following:
                         ;
-                        ;   XX14 = offset to the first coordinate in the ship's
-                        ;          line heap
+                        ;   LSNUM = offset to the first coordinate in the ship's
+                        ;           line heap
                         ;
-                        ;   XX14+1 = the number of bytes in the heap for the
+                        ;   LSNUM2 = the number of bytes in the heap for the
                         ;            ship that's currently on-screen (or 0 if
                         ;            there is no ship currently on-screen)
 
- LDY #1                 ; Set XX14 = 1, the offset of the first set of line
- STY XX14               ; coordinates in the ship line heap
+ LDY #1                 ; Set LSNUM = 1, the offset of the first set of line
+ STY LSNUM              ; coordinates in the ship line heap
 
  DEY                    ; Decrement Y to 0
 
@@ -388,7 +391,7 @@
  BNE P%+5               ; following two instructions
 
  LDA #0                 ; The ship is not being drawn on screen, so set A = 0
-                        ; so that XX14+1 gets set to 0 below (as there are no
+                        ; so that LSNUM2 gets set to 0 below (as there are no
                         ; existing coordinates on the ship line heap for this
                         ; ship)
 
@@ -396,8 +399,8 @@
                         ; $2C $B1 $BD, or BIT $BDB1 which does nothing apart
                         ; from affect the flags
 
- LDA (XX19),Y           ; Set XX14+1 to the first byte of the ship's line heap,
- STA XX14+1             ; which contains the number of bytes in the heap
+ LDA (XX19),Y           ; Set LSNUM2 to the first byte of the ship's line heap,
+ STA LSNUM2             ; which contains the number of bytes in the heap
 
  RTS
 
@@ -415,13 +418,13 @@
 
                         ; We replace the JMP LL78 instruction at the end of part
                         ; 10 of LL9 with JSR PATCH2, so this effectively inserts
-                        ; the call to LLX30 at the end of part 10, as required
+                        ; the call to LSPUT at the end of part 10, as required
 
- JSR LLX30              ; Draw the laser line using flicker-free animation, by
+ JSR LSPUT              ; Draw the laser line using flicker-free animation, by
                         ; first drawing the new laser line and then erasing the
                         ; corresponding old line from the screen
 
  JMP LL78               ; Jump down to part 11
 
- SAVE "extra.bin", LLX30, P%
+ SAVE "extra.bin", LSPUT, P%
 

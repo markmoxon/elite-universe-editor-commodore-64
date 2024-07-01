@@ -9,8 +9,17 @@ python="python"
 rm -fr work
 mkdir work
 
+# Get the current date for the build filename
+CURRENTDATE=`date +%Y-%m-%d`
+
 # First, we build the NTSC version
 cd work
+
+# Create an empty file for the build number
+touch empty.txt
+
+# Create the readme file for flicker-free ships
+$beebasm -i ../src/elite-flicker-free-readme.asm
 
 # Extract the files from the original disk image
 $c1541 -attach "../original-disks/elite[firebird_1986](ntsc)(v060186)(!).g64" \

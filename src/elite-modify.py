@@ -86,7 +86,7 @@ print()
 print("Modifying Commodore 64 Elite")
 print("Platform: {}".format(platform.upper()))
 
-# Configuration variables
+# Configuration variables for gma6
 
 load_address = 0x6A00 - 2
 seed = 0x49
@@ -126,10 +126,10 @@ output_file.close()
 
 print("[ Save    ] gma6.decrypted")
 
-# Set the addresses for the extra routines (LLX30, PATCH1, PATCH2) that we will
+# Set the addresses for the extra routines (LSPUT, PATCH1, PATCH2) that we will
 # append to the end of the main game code (where there is a bit of free space)
 
-llx30 = 0xCCE0
+lsput = 0xCCE0
 patch1 = 0xCD1E
 patch2 = 0xCD35
 
@@ -232,11 +232,11 @@ insert_nops(data_block, 0x9F3D, 10)
 #       INY
 #       STY U
 #
-# To:   JSR LLX30
+# To:   JSR LSPUT
 #       NOP x21
 
 insert_bytes(data_block, 0x9F87, [
-    0x20, llx30 % 256, llx30 // 256     # JSR LLX30
+    0x20, lsput % 256, lsput // 256     # JSR LSPUT
 ])
 insert_nops(data_block, 0x9F8A, 21)
 
@@ -288,9 +288,9 @@ insert_nops(data_block, 0x9FC1, 1)
 #       NOP
 
 insert_bytes(data_block, 0x9FD9, [
-    0xC8,                                   # INY
-    0xB1, 0x5B,                             # LDA (V),Y
-    0xAA                                    # TAX
+    0xC8,                               # INY
+    0xB1, 0x5B,                         # LDA (V),Y
+    0xAA                                # TAX
 ])
 
 lda_sta_block = get_offset(0x9FDD)
@@ -298,9 +298,9 @@ for n in range(lda_sta_block, lda_sta_block + 4 * 5):
     data_block[n] = data_block[n + 4]
 
 insert_bytes(data_block, 0x9FF1, [
-    0xC8,                                   # INY
-    0xB1, 0x5B,                             # LDA (V),Y
-    0xAA                                    # TAX
+    0xC8,                               # INY
+    0xB1, 0x5B,                         # LDA (V),Y
+    0xAA                                # TAX
 ])
 insert_nops(data_block, 0x9FF5, 2)
 
@@ -308,7 +308,7 @@ insert_nops(data_block, 0x9FF5, 2)
 #
 # This is the modification at the end of the routine. The C64 version has an
 # extra JMP LL80 instruction at this point that we can modify to jump to a
-# new routine PATCH2, which lets us insert the extra JSR LLX30 without taking
+# new routine PATCH2, which lets us insert the extra JSR LSPUT without taking
 # up any more bytes.
 #
 # From: JMP LL80
@@ -316,7 +316,7 @@ insert_nops(data_block, 0x9FF5, 2)
 # To:   JMP PATCH2
 
 insert_bytes(data_block, 0xA010, [
-    0x4C, patch2 % 256, patch2 // 256       # JMP PATCH2
+    0x4C, patch2 % 256, patch2 // 256   # JMP PATCH2
 ])
 
 # LL9 (Part 11)
@@ -346,7 +346,7 @@ insert_binary_file(data_block, 0xA178, "ll155.bin")
 # We now append the three extra routines required by the modifications to the
 # end of the main binary (where there is enough free space for them):
 #
-#   LLX30
+#   LSPUT
 #   PATCH1
 #   PATCH2
 #
@@ -468,6 +468,7 @@ elite_file = open("gma1", "rb")
 data_block.extend(elite_file.read())
 elite_file.close()
 
+print()
 print("[ Read    ] gma1")
 
 if platform == "pal":
