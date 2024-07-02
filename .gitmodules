@@ -1,0 +1,3 @@
+[submodule "library-elite-universe-editor"]
+	path = library-elite-universe-editor
+	url = https://github.com/markmoxon/library-elite-universe-editor.git
