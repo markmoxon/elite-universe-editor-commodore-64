@@ -18,6 +18,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# Project files
+# IDE files
 .vscode/tasks.json
-work/
+*.code-workspace
+run.bat
