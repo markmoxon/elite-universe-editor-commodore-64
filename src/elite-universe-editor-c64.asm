@@ -33,7 +33,7 @@
  _MASTER_VERSION = FALSE
  _C64_VERSION    = TRUE
 
- INCLUDE "../library-elite-universe-editor/main-sources/elite-universe-editor-variables.asm"
+ INCLUDE "../../library-elite-universe-editor/main-sources/elite-universe-editor-variables.asm"
 
 ; ******************************************************************************
 ;
@@ -211,11 +211,11 @@
 
  RTS                    ; Return from the subroutine
 
- INCLUDE "../library-elite-universe-editor/main-sources/elite-universe-editor-3.asm"
- INCLUDE "../library-elite-universe-editor/main-sources/elite-universe-editor-1.asm"
- INCLUDE "../library-elite-universe-editor/main-sources/elite-universe-editor-2.asm"
- INCLUDE "../library-elite-universe-editor/main-sources/elite-universe-editor-4.asm"
- INCLUDE "../library-elite-universe-editor/main-sources/elite-universe-editor-z.asm"
+ INCLUDE "../../library-elite-universe-editor/main-sources/elite-universe-editor-3.asm"
+ INCLUDE "../../library-elite-universe-editor/main-sources/elite-universe-editor-1.asm"
+ INCLUDE "../../library-elite-universe-editor/main-sources/elite-universe-editor-2.asm"
+ INCLUDE "../../library-elite-universe-editor/main-sources/elite-universe-editor-4.asm"
+ INCLUDE "../../library-elite-universe-editor/main-sources/elite-universe-editor-z.asm"
 
 ; ******************************************************************************
 ;
