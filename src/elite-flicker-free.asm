@@ -59,7 +59,8 @@
  XX17   = $009F
  XX4    = $00AD
  XX20   = $00AE
- XX14   = $00FB
+ LSNUM  = $00FB
+ LSNUM2 = $00FC
  PROJ   = $7D1F
  LL75   = $9FB8
  LL30   = $AB91
@@ -264,8 +265,6 @@
 
  SAVE "ll155.bin", LL155, P%
 
- ORG $CCE0
-
 ; ******************************************************************************
 ;
 ;       Name: LSPUT
@@ -275,14 +274,16 @@
 ;
 ; ******************************************************************************
 
- GUARD $2A12
+ ORG $CCE0
+
+ GUARD $CE00
 
 .LSPUT
 
- LDY XX14               ; Set Y = XX14, to get the offset within the ship line
+ LDY LSNUM              ; Set Y = LSNUM, to get the offset within the ship line
                         ; heap where we want to insert our new line
 
- CPY XX14+1             ; Compare XX14 and XX14+1 and store the flags on the
+ CPY LSNUM2             ; Compare LSNUM and LSNUM2 and store the flags on the
  PHP                    ; stack so we can retrieve them later
 
  LDX #3                 ; We now want to copy the line coordinates (X1, Y1) and
