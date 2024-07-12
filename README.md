@@ -10,7 +10,7 @@ This repository contains the Universe Editor code as a submodule:
 
 * [Elite Universe Editor Library](https://github.com/markmoxon/library-elite-universe-editor)
 
-This code is patched into Elite. You can search the source code for the patch points by searching the sources for `Mod:`. This repository is downstream from the [6502 Second Processor Elite](https://github.com/markmoxon/6502sp-elite-beebasm) repository, and can be updated by pulling from the `main` branch upstream.
+This code is patched into Elite. You can search the source code for the patch points by searching the sources for `Mod:`.
 
 The following repositories are used to generate the Universe Editor for the different platforms:
 
