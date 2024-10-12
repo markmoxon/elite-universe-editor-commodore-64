@@ -48,10 +48,10 @@ $c1541 \
     -write gma4 \
     -write gma5 \
     -write gma6.encrypted gma6 \
-    -write ../../library-elite-universe-editor/universe-files/u.boxart1.bin "boxart1" \
-    -write ../../library-elite-universe-editor/universe-files/u.boxart2.bin "boxart2" \
-    -write ../../library-elite-universe-editor/universe-files/u.manual.bin "manual" \
-    -write ../../library-elite-universe-editor/universe-files/u.shipid.bin "shipid"
+    -write ../../elite-universe-editor-library/universe-files/u.boxart1.bin "boxart1" \
+    -write ../../elite-universe-editor-library/universe-files/u.boxart2.bin "boxart2" \
+    -write ../../elite-universe-editor-library/universe-files/u.manual.bin "manual" \
+    -write ../../elite-universe-editor-library/universe-files/u.shipid.bin "shipid"
 
 # Report checksums
 cd ../..
@@ -86,10 +86,10 @@ $c1541 \
     -write gma4 \
     -write gma5 \
     -write gma6.encrypted gma6 \
-    -write ../../library-elite-universe-editor/universe-files/u.boxart1.bin "boxart1" \
-    -write ../../library-elite-universe-editor/universe-files/u.boxart2.bin "boxart2" \
-    -write ../../library-elite-universe-editor/universe-files/u.manual.bin "manual" \
-    -write ../../library-elite-universe-editor/universe-files/u.shipid.bin "shipid"
+    -write ../../elite-universe-editor-library/universe-files/u.boxart1.bin "boxart1" \
+    -write ../../elite-universe-editor-library/universe-files/u.boxart2.bin "boxart2" \
+    -write ../../elite-universe-editor-library/universe-files/u.manual.bin "manual" \
+    -write ../../elite-universe-editor-library/universe-files/u.shipid.bin "shipid"
 
 # Report checksums
 cd ../..
