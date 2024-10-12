@@ -14,9 +14,9 @@ This code is patched into Elite. You can search the source code for the patch po
 
 The following repositories are used to generate the Universe Editor for the different platforms:
 
-* [BBC Master Elite Universe Editor](https://github.com/markmoxon/master-elite-universe-editor)
-* [6502 Second Processor Elite Universe Editor](https://github.com/markmoxon/6502sp-elite-universe-editor)
-* [Commodore 64 Elite Universe Editor](https://github.com/markmoxon/c64-elite-universe-editor)
+* [BBC Master Elite Universe Editor](https://github.com/markmoxon/elite-universe-editor-bbc-master)
+* [6502 Second Processor Elite Universe Editor](https://github.com/markmoxon/elite-universe-editor-6502-second-processor)
+* [Commodore 64 Elite Universe Editor](https://github.com/markmoxon/elite-universe-editor-commodore-64)
 
 The above repositories are used when building the Universe Editor and the Elite Compendium discs:
 
